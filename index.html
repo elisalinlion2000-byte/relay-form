@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>新北鐵道馬拉松接力賽｜明日奮力一搶</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#10262e; --navy:#123a46; --teal:#1c6b73; --sky:#e8f2f1;
+    --orange:#f26a21; --amber:#ffb627; --paper:#fbf8f2; --line:#d9e2e0;
+    --muted:#5b6f73; --err:#c8361b; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Noto Sans TC",system-ui,-apple-system,sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .hero{position:relative;background:linear-gradient(160deg,var(--navy) 0%,var(--teal) 100%);color:#fff;padding:34px 22px 64px;overflow:hidden}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:26px;height:6px;background:repeating-linear-gradient(90deg,var(--orange) 0 60px,var(--amber) 60px 72px)}
+  .hero .rail{position:absolute;left:0;right:0;bottom:0;height:22px;background:
+     repeating-linear-gradient(90deg,transparent 0 18px,rgba(255,255,255,.28) 18px 24px),
+     linear-gradient(180deg,transparent 5px,rgba(255,255,255,.5) 5px 7px,transparent 7px 15px,rgba(255,255,255,.5) 15px 17px,transparent 17px)}
+  .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;background:var(--orange);padding:5px 10px;border-radius:999px}
+  h1{font-size:28px;line-height:1.25;margin:14px 0 6px;font-weight:900;letter-spacing:.02em}
+  h1 small{display:block;font-size:16px;font-weight:500;opacity:.85;margin-top:4px;letter-spacing:.06em}
+  .hero p{margin:12px 0 0;font-size:14px;line-height:1.7;opacity:.92;max-width:520px}
+  main{max-width:560px;margin:-22px auto 0;padding:0 14px 60px;position:relative;z-index:2}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:0 6px 24px rgba(16,38,46,.08);padding:20px 18px;margin-bottom:16px}
+  .card h2{font-size:17px;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+  .card h2 .no{width:26px;height:26px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;display:grid;place-items:center;flex:none}
+  label.f{display:block;margin-bottom:14px}
+  label.f>span{display:block;font-size:14px;font-weight:700;margin-bottom:6px}
+  label.f>span i{color:var(--orange);font-style:normal;margin-left:3px}
+  input[type=text],input[type=tel],input[type=date],textarea{width:100%;font:inherit;font-size:16px;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s}
+  input:focus,textarea:focus{border-color:var(--teal)}
+  .bad input,.bad textarea{border-color:var(--err)}
+  .hint{font-size:12px;color:var(--muted);margin-top:5px}
+  .errmsg{font-size:12px;color:var(--err);margin-top:5px;display:none}
+  .bad .errmsg{display:block}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .choice button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:12px;padding:14px 8px;cursor:pointer;text-align:center;color:var(--ink)}
+  .choice button b{display:block;font-size:16px}
+  .choice button small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+  .choice button.on{border-color:var(--orange);background:#fff4ec}
+  .choice button.on b{color:var(--orange)}
+  .legs{position:relative;margin-top:6px}
+  .legs::before{content:"";position:absolute;left:21px;top:14px;bottom:14px;width:4px;background:repeating-linear-gradient(180deg,var(--navy) 0 10px,transparent 10px 16px);opacity:.35}
+  .leg{position:relative;display:flex;align-items:center;gap:12px;width:100%;font:inherit;text-align:left;background:none;border:0;padding:8px 0;cursor:pointer;color:var(--ink)}
+  .leg .dot{width:46px;height:46px;flex:none;border-radius:50%;background:#fff;border:3px solid var(--line);display:grid;place-items:center;font-weight:900;font-size:15px;color:var(--muted);position:relative;z-index:1;transition:all .15s}
+  .leg .body{flex:1;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;transition:all .15s;background:#fff}
+  .leg .nm{font-weight:700;font-size:15px}
+  .leg .nm em{font-style:normal;font-size:11px;font-weight:700;background:#ffe3ec;color:#b3264f;padding:2px 6px;border-radius:6px;margin-left:6px;vertical-align:2px}
+  .leg .km{font-weight:900;color:var(--teal);font-size:15px;white-space:nowrap}
+  .leg.picked .dot{background:var(--orange);border-color:var(--orange);color:#fff}
+  .leg.picked .body{border-color:var(--orange);background:#fff8f2}
+  .leg:disabled{cursor:default}
+  .leg:disabled .body{opacity:.45}
+  .leg:disabled .dot{color:#c3cccd;border-color:#edf1f0}
+  .picks{display:flex;gap:8px;margin:4px 0 10px;flex-wrap:wrap}
+  .pill{font-size:13px;border-radius:999px;padding:6px 11px;background:var(--sky);color:var(--navy);font-weight:700}
+  .pill.empty{background:#f1f1ef;color:#9aa5a7;font-weight:500}
+  .reset{font:inherit;font-size:13px;background:none;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;padding:0}
+  .submit{width:100%;font:inherit;font-size:18px;font-weight:900;letter-spacing:.1em;color:#fff;background:linear-gradient(90deg,var(--orange),#ff8a3d);border:0;border-radius:14px;padding:16px;cursor:pointer;box-shadow:0 8px 20px rgba(242,106,33,.35)}
+  .submit:disabled{opacity:.6;cursor:wait}
+  .privacy{font-size:12px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6}
+  .toast{display:none;margin-bottom:14px;padding:12px 14px;border-radius:10px;background:#fde8e3;color:var(--err);font-size:14px}
+  .done{display:none;text-align:center;padding:34px 18px}
+  .done .big{font-size:54px}
+  .done h2{display:block;font-size:22px;margin:10px 0 8px}
+  .done p{color:var(--muted);line-height:1.7;margin:0 0 18px}
+  .again{font:inherit;font-weight:700;border:2px solid var(--teal);color:var(--teal);background:#fff;border-radius:12px;padding:10px 18px;cursor:pointer}
+</style>
+</head>
+<body>
+<header class="hero">
+  <span class="tag">明日中午 開搶</span>
+  <h1>新北鐵道馬拉松接力賽<small>明日奮力一搶表單</small></h1>
+  <p>明天中午要來試試看能不能刷到「沒有繳費人」釋出的名額！請大家先填好資料和想跑的棒次排序，搶到就直接幫你報名 🏃‍♀️🚆</p>
+  <div class="rail"></div>
+</header>
+
+<main>
+<form id="f" novalidate>
+  <div class="toast" id="toast"></div>
+
+  <section class="card">
+    <h2><span class="no">1</span>跑者資料</h2>
+    <label class="f" data-k="name"><span>姓名<i>*</i></span>
+      <input type="text" name="name" autocomplete="name" placeholder="與身分證相同">
+      <div class="errmsg">請填寫姓名</div></label>
+    <label class="f" data-k="birthday"><span>生日<i>*</i></span>
+      <input type="date" name="birthday" max="2020-12-31">
+      <div class="errmsg">請選擇生日</div></label>
+    <label class="f" data-k="phone"><span>電話<i>*</i></span>
+      <input type="tel" name="phone" inputmode="tel" autocomplete="tel" placeholder="0912345678">
+      <div class="errmsg">請填寫正確的手機號碼（09 開頭 10 碼）</div></label>
+    <label class="f" data-k="idno"><span>身分證字號<i>*</i></span>
+      <input type="text" name="idno" autocapitalize="characters" maxlength="10" placeholder="A123456789">
+      <div class="errmsg">格式不對，應為 1 個英文字母 + 9 碼</div></label>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">2</span>緊急聯絡人</h2>
+    <div class="row2">
+      <label class="f" data-k="ecName"><span>姓名<i>*</i></span>
+        <input type="text" name="ecName" placeholder="姓名">
+        <div class="errmsg">請填寫</div></label>
+      <label class="f" data-k="ecPhone"><span>電話<i>*</i></span>
+        <input type="tel" name="ecPhone" inputmode="tel" placeholder="0912345678">
+        <div class="errmsg">請填寫電話</div></label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">3</span>參加意願</h2>
+    <div class="choice" data-k="intent">
+      <button type="button" data-v="我想要跑"><b>🔥 我想要跑</b><small>搶到名額優先排我</small></button>
+      <button type="button" data-v="我候補就好"><b>🙋 我候補就好</b><small>有空位再補我</small></button>
+    </div>
+    <div class="errmsg" id="intentErr" style="margin-top:8px">請選一個</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">4</span>想跑的棒次排序</h2>
+    <div class="hint" id="rankHint" style="margin:-6px 0 10px">依序點選你最想跑的 3 個棒次，第一個點的就是第 1 志願。</div>
+    <div class="picks" id="picks"></div>
+    <div class="legs" id="legs"></div>
+    <button type="button" class="reset" id="reset">清除重選</button>
+    <div class="errmsg" id="rankErr" style="margin-top:8px">請選滿 3 個志願</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="no">5</span>備註（選填）</h2>
+    <label class="f" style="margin:0"><textarea name="note" rows="2" placeholder="有什麼想說的？例如哪一棒絕對不行"></textarea></label>
+  </section>
+
+  <button class="submit" id="btn" type="submit">送出，明天衝！</button>
+  <p class="privacy">資料只用於本次接力賽報名，僅主辦朋友可查看。</p>
+</form>
+
+<section class="card done" id="done">
+  <div class="big">🚆</div>
+  <h2>收到了，謝謝！</h2>
+  <p>明天中午搶到名額會再通知你。<br>祝我們手速夠快 🙏</p>
+  <button class="again" id="again" type="button">再幫另一位朋友填</button>
+</section>
+</main>
+
+<script>
+// ↓ 部署 Apps Script 後，把「網頁應用程式」網址（/exec 結尾）貼在這裡
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyw1IDIjq0SWBUKAbOMH9XOQYx4KZByPf-2ockzOY_X4oCjXAePUSMCJ0lWEt-eiGkG/exec";
+
+const LEGS = [
+  {n:1, name:"女神棒", km:"5.0K", female:true},
+  {n:2, name:"海神棒", km:"15.0K"},
+  {n:3, name:"安神棒", km:"5.8K"},
+  {n:4, name:"山神棒", km:"10.0K"},
+  {n:5, name:"風神棒", km:"4.1K"},
+  {n:6, name:"恍神棒", km:"5.9K"},
+  {n:7, name:"迎神棒", km:"5.4K"},
+];
+const legLabel = l => `第${"一二三四五六七"[l.n-1]}棒 ${l.name}（${l.km}）${l.female?"（限女）":""}`;
+const form = document.getElementById("f");
+let ranks = [];      // array of leg numbers in pick order
+let intent = "";
+
+function renderLegs(){
+  const box = document.getElementById("legs");
+  box.innerHTML = "";
+  LEGS.forEach(l=>{
+    const idx = ranks.indexOf(l.n);
+    const b = document.createElement("button");
+    b.type="button";
+    b.className = "leg" + (idx>-1?" picked":"");
+    b.disabled = idx===-1 && ranks.length>=3;
+    b.innerHTML = `<span class="dot">${idx>-1?idx+1:l.n}</span>
+      <span class="body"><span class="nm">第${"一二三四五六七"[l.n-1]}棒・${l.name}${l.female?"<em>限女</em>":""}</span><span class="km">${l.km}</span></span>`;
+    b.onclick = ()=>{
+      if(idx>-1) ranks.splice(idx,1); else if(ranks.length<3) ranks.push(l.n);
+      document.getElementById("rankErr").style.display="none";
+      renderLegs();
+    };
+    box.appendChild(b);
+  });
+  const picks = document.getElementById("picks");
+  picks.innerHTML = [0,1,2].map(i=>{
+    const l = LEGS.find(x=>x.n===ranks[i]);
+    return l ? `<span class="pill">${i+1}．${l.name} ${l.km}</span>` : `<span class="pill empty">${i+1}．未選</span>`;
+  }).join("");
+}
+document.getElementById("reset").onclick = ()=>{ranks=[];renderLegs();};
+
+document.querySelectorAll(".choice button").forEach(b=>{
+  b.onclick = ()=>{
+    intent = b.dataset.v;
+    document.querySelectorAll(".choice button").forEach(x=>x.classList.toggle("on", x===b));
+    document.getElementById("intentErr").style.display="none";
+    document.getElementById("rankHint").textContent = intent==="我候補就好"
+      ? "候補也可以排一下偏好（選填），點幾個都可以，最多 3 個。"
+      : "依序點選你最想跑的 3 個棒次，第一個點的就是第 1 志願。";
+  };
+});
+
+const val = n => (form.elements[n].value||"").trim();
+function check(){
+  let ok = true;
+  const rules = {
+    name: v=>v.length>0,
+    birthday: v=>/^\d{4}-\d{2}-\d{2}$/.test(v),
+    phone: v=>/^09\d{8}$/.test(v.replace(/[-\s]/g,"")),
+    idno: v=>/^[A-Z][1289A-D]\d{8}$/i.test(v),
+    ecName: v=>v.length>0,
+    ecPhone: v=>v.replace(/[-\s()]/g,"").length>=8,
+  };
+  Object.entries(rules).forEach(([k,fn])=>{
+    const wrap = form.querySelector(`[data-k="${k}"]`);
+    const good = fn(val(k));
+    wrap.classList.toggle("bad", !good);
+    if(!good) ok=false;
+  });
+  if(!intent){document.getElementById("intentErr").style.display="block"; ok=false;}
+  if(intent==="我想要跑" && ranks.length<3){document.getElementById("rankErr").style.display="block"; ok=false;}
+  return ok;
+}
+form.querySelectorAll("input").forEach(i=>i.addEventListener("input",()=>i.closest(".f")?.classList.remove("bad")));
+
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display=msg?"block":"none";}
+
+form.addEventListener("submit", e=>{
+  e.preventDefault();
+  showToast("");
+  if(!check()){
+    const first = form.querySelector(".bad") || document.querySelector('.errmsg[style*="block"]');
+    first && first.scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
+  const leg = n => { const l = LEGS.find(x=>x.n===n); return l ? legLabel(l) : ""; };
+  const data = {
+    name: val("name"), birthday: val("birthday"),
+    phone: val("phone").replace(/[-\s]/g,""), idno: val("idno").toUpperCase(),
+    ecName: val("ecName"), ecPhone: val("ecPhone"),
+    intent, r1: leg(ranks[0]), r2: leg(ranks[1]), r3: leg(ranks[2]),
+    note: val("note"),
+  };
+  const btn = document.getElementById("btn");
+  btn.disabled = true; btn.textContent = "送出中…";
+  const finish = ()=>{
+    btn.disabled=false; btn.textContent="送出，明天衝！";
+    form.style.display="none"; document.getElementById("done").style.display="block";
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+  const fail = err=>{
+    btn.disabled=false; btn.textContent="送出，明天衝！";
+    showToast("送出失敗，請再試一次（" + (err && err.message || err) + "）");
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+  if(window.google && google.script && google.script.run){
+    google.script.run.withSuccessHandler(finish).withFailureHandler(fail).submitForm(data);
+  } else if (SCRIPT_URL.startsWith("https://")) {
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify(data),
+    })
+      .then(r => r.json())
+      .then(res => res.ok ? finish() : fail(res.error || "寫入失敗"))
+      .catch(fail);
+  } else {
+    // 預覽模式：還沒填 SCRIPT_URL 時只模擬送出
+    console.log("preview submit", data); setTimeout(finish, 500);
+  }
+});
+
+document.getElementById("again").onclick = ()=>{
+  form.reset(); ranks=[]; intent="";
+  document.querySelectorAll(".choice button").forEach(x=>x.classList.remove("on"));
+  renderLegs();
+  document.getElementById("done").style.display="none"; form.style.display="block";
+  window.scrollTo({top:0});
+};
+renderLegs();
+</script>
+</body>
+</html>
